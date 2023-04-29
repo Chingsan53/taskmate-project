@@ -367,9 +367,9 @@ class Page1(QWidget):
                     for task, (start_time, end_time) in schedule.items():
 
                         if (len(schedulesArr) > i):
-                            schedulesArr[i] += f"{task}->{start_time}:00-{end_time}:00\n"
+                            schedulesArr[i] += f"{task}  ->  {start_time}:00  -  {end_time}:00\n"
                         else:
-                            schedulesArr.append(f"{task}->{start_time}:00-{end_time}:00\n")
+                            schedulesArr.append(f"{task}  ->  {start_time}:00  -  {end_time}:00\n")
 
                         print(f"    {task}: {start_time}-{end_time}")
                     print()
@@ -388,10 +388,12 @@ class Page2(QWidget):
         self.page3 = page3
 
         scheduleLabel = QLabel("Choose Your Schedule", self)
-        scheduleLabel.move(350, 20)
+        scheduleLabel.setFont(QFont("Tahoma", 18))
+        scheduleLabel.move(350, 40)
 
         self.dayLabel = QLabel("", self)
-        self.dayLabel.move(50, 180)
+        self.dayLabel.move(300, 170)
+        self.dayLabel.setFont(QFont("Tahoma", 18))
 
         # Font
         headerFont = QFont()
@@ -403,13 +405,50 @@ class Page2(QWidget):
 
         # Currently generates schedule, will change to auto do on page load or make it the submit button from page 1
         submitButton = QPushButton("next", self)
-        submitButton.move(50, 400)
+        submitButton.setObjectName("ModernButton2")
+        submitButton.setStyleSheet("""
+                    QPushButton#ModernButton2 {
+                        background-color: #3498DB;
+                        color: white;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 16px;
+                    }
+                    QToolButton#ModernButton:hover {
+                        background-color: #2980B9;
+                    }
+                    QToolButton#ModernButton:pressed {
+                        background-color: #1B4F72;
+                    }
+                """)
+        submitButton.move(300, 400)
         submitButton.clicked.connect(self.goToPage3)
         # button.clicked.connect(self.generateSchedule)
 
         # Load schedule
         self.scheduleList = QListWidget(self)
-        self.scheduleList.move(50, 200)
+        self.setStyleSheet("""
+                    QListWidget {
+                        background-color: #F1F6F9;
+                        border: 1px #394867;
+                        font-family: Arial;
+                        font-size: 18px;
+                        border-radius: 16px;
+                    }
+
+                    QListWidget::item {
+                        background-color: #F6F1E9;
+                        padding: 5px;
+                        border-radius: 16px;
+                    }
+
+                    QListWidget::item:selected {
+                        background-color: #088395;
+                        color: white;
+                        border-radius: 16px;
+                    }
+                """)
+        self.scheduleList.move(300, 200)
         self.scheduleList.currentItemChanged.connect(self.indexChanged)
         # self.scheduleList.currentItemChanged.connect(self.textChanged)
 

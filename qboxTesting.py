@@ -1,39 +1,47 @@
-from PyQt6.QtWidgets import QApplication, QSpinBox
-from PyQt6.QtGui import QFont
 
-app = QApplication([])
+from PyQt6.QtWidgets import QApplication, QWidget, QListWidget, QListWidgetItem, QHBoxLayout, QMenu, QAbstractItemView
+from PyQt6.QtCore import Qt
+class MyListWidget(QListWidget):
+    def __init__(self):
+        super().__init__()
+        self.setAlternatingRowColors(True)
+        self.setDragEnabled(True)
+        self.setAcceptDrops(True)
+        self.setDropIndicatorShown(True)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.show_context_menu)
+        self.itemDoubleClicked.connect(self.item_double_clicked)
 
-spinBox = QSpinBox()
-spinBox.setStyleSheet('''
-    QSpinBox {
-        border: none;
-        background-color: #FFFFFF;
-        color: #303030;
-        font-size: 14px;
-        padding: 8px;
-    }
+    def show_context_menu(self, pos):
+        menu = QMenu(self)
+        remove_action = menu.addAction("Remove")
+        action = menu.exec_(self.mapToGlobal(pos))
+        if action == remove_action:
+            self.remove_selected_items()
 
-    QSpinBox::up-button, QSpinBox::down-button {
-        border: none;
-        background-color: #FFABAB;
-        width: 16px;
-        height: 16px;
-        subcontrol-origin: padding;
-        subcontrol-position: right;
-        margin-right: 8px;
-        margin-top: 8px;
-    }
+    def item_double_clicked(self, item):
+        print(f"Item {item.text()} was double-clicked")
 
-    QSpinBox::up-button:hover, QSpinBox::down-button:hover {
-        background-color: #ED2B2A;
-    }
+    def remove_selected_items(self):
+        for item in self.selectedItems():
+            self.takeItem(self.row(item))
 
-    QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
-        background-color: #ED2B2A;
-    }
-''')
-spinBox.setFont(QFont('Open Sans', 14))
+class MainWindow(QWidget):
+    def __init__(self):
+        super().__init__()
 
-spinBox.show()
+        self.list_widget = MyListWidget()
+        self.list_widget.addItem("Item 1")
+        self.list_widget.addItem("Item 2")
+        self.list_widget.addItem("Item 3")
 
-app.exec()
+        layout = QHBoxLayout()
+        layout.addWidget(self.list_widget)
+        self.setLayout(layout)
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    app.exec()
