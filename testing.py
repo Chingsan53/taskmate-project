@@ -388,8 +388,8 @@ class Page2(QWidget):
         self.page3 = page3
 
         scheduleLabel = QLabel("Choose Your Schedule", self)
-        scheduleLabel.setFont(QFont("Tahoma", 18))
-        scheduleLabel.move(350, 40)
+        scheduleLabel.setFont(QFont("Tahoma", 20))
+        scheduleLabel.move(328, 40)
 
         self.dayLabel = QLabel("", self)
         self.dayLabel.move(300, 170)
