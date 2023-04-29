@@ -493,19 +493,79 @@ class Page3(QWidget):
         # Calendar View
         self.calendarView = QCalendarWidget(self)
         self.calendarView.setSelectedDate(self.calendarView.selectedDate())
-        self.calendarView.move(250, 150)
+        self.calendarView.move(270, 150)
         self.calendarView.clicked.connect(self.on_date_clicked)
 
         # Description Selected TextBox
         self.descriptionTextBrowser = QTextBrowser(self)
-        self.descriptionTextBrowser.move(600, 150)
+        self.descriptionTextBrowser.setStyleSheet("""
+                                    QTextBrowser {
+                                        background-color: #F1F6F9;
+                                        border: 1px #394867;
+                                        font-family: Arial;
+                                        font-size: 18px;
+                                        border-radius: 16px;
+                                    }
+
+                                    QListWidget::item {
+                                        background-color: #F6F1E9;
+                                        padding: 5px;
+                                        border-radius: 16px;
+                                    }
+
+                                    QListWidget::item:selected {
+                                        background-color: #088395;
+                                        color: white;
+                                        border-radius: 16px;
+                                    }
+                                """)
+        # self.descriptionTextBrowser.move(600, 150)
+        self.descriptionTextBrowser.setGeometry(600, 150, 230, 200)
 
         # Schedule List Trial
         self.scheduleListCal = QListWidget(self)
-        self.scheduleListCal.move(50, 150)
+        self.scheduleListCal.setStyleSheet("""
+                            QListWidget {
+                                background-color: #F1F6F9;
+                                border: 1px #394867;
+                                font-family: Arial;
+                                font-size: 18px;
+                                border-radius: 16px;
+                            }
+
+                            QListWidget::item {
+                                background-color: #F6F1E9;
+                                padding: 5px;
+                                border-radius: 16px;
+                            }
+
+                            QListWidget::item:selected {
+                                background-color: #088395;
+                                color: white;
+                                border-radius: 16px;
+                            }
+                        """)
+        self.scheduleListCal.move(10, 150)
+        self.scheduleListCal.setGeometry(10, 150, 230, 200)
         self.scheduleListCal.currentItemChanged.connect(self.indexChanged)
 
         button = QPushButton("Back", self)
+        button.setObjectName("ModernButton2")
+        button.setStyleSheet("""
+                            QPushButton#ModernButton2 {
+                                background-color: #3498DB;
+                                color: white;
+                                border: none;
+                                padding: 8px 16px;
+                                border-radius: 16px;
+                            }
+                            QToolButton#ModernButton:hover {
+                                background-color: #2980B9;
+                            }
+                            QToolButton#ModernButton:pressed {
+                                background-color: #1B4F72;
+                            }
+                        """)
         button.move(50, 400)
         button.clicked.connect(self.go_to_page1)
 
