@@ -18,7 +18,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton,
                              QSplashScreen, QMainWindow, QMessageBox, QDateTimeEdit,
                              QScrollArea, QSpinBox, QComboBox, QTimeEdit, QListWidget,
                              QTextBrowser)
-from PyQt6.QtGui import QIcon, QFont, QFontDatabase, QPixmap, QColor, QPalette
+from PyQt6.QtGui import QIcon, QFont, QFontDatabase, QPixmap, QColor, QPalette, QCursor
 from PyQt6.QtCore import Qt, QDate
 
 from itertools import permutations
@@ -40,48 +40,111 @@ class Page1(QWidget):
 
         self.page2 = page2
 
-        bg1 = QWidget(self)
-        # self.setCentralWidget(bg1)
-
-        # bg1.setStyleSheet("background-color: #F1F6F9;")
-        # bg1.setGeometry(0,0, 850, 500)
-
         taskMateLabel = QLabel("Task Mate", self)
+        taskMateLabel.setFont(QFont("Trebuchet MS", 30))
         taskMateLabel.move(400, 20)
 
         # Font Size
-        headerFont = QFont()
-        headerFont.setBold(True)
-        headerFont.setPointSize(20)
 
-        # Font Color
-        taskMateLabel.setFont(headerFont)
-        taskMateLabel.setStyleSheet("color: black")
+
 
         # Create Event
-        eventLabel = QLabel("Event Name", self)
+        eventLabel = QLabel("Event Name:", self)
+        eventLabel.setFont(QFont("Tahoma", 14))
         eventLabel.move(50, 100)
         eventLabel.setStyleSheet("color: black")
 
         # Textbox for Event Name
         eventTextBox = QLineEdit(self)
-        eventTextBox.move(120, 100)
+        eventTextBox.setObjectName("ModernLineEdit1")
+        eventTextBox.setStyleSheet("""
+                    QLineEdit#ModernLineEdit1 {
+                        background-color: #F5F5F5;
+                        border: none;
+                        padding: 8px;
+                        border-radius: 8px;
+                    }
+                    QLineEdit#ModernLineEdit:hover {
+                        background-color: #E6E6E6;
+                    }
+                    QLineEdit#ModernLineEdit:focus {
+                        background-color: white;
+                        border: 2px solid #3498DB;
+                    }
+                """)
+        eventTextBox.move(140, 92)
         eventTextBox.setFixedWidth(200)
-        eventTextBox.setFixedHeight(20)
+        eventTextBox.setFixedHeight(33)
 
         # Hours
         hoursLabel = QLabel("How many hours for this task?", self)
-        hoursLabel.move(50, 150)
+        hoursLabel.setFont(QFont("Tahoma", 14))
+        hoursLabel.move(50, 155)
         hoursBox = QSpinBox(self)
-        hoursBox.move(50, 170)
+        hoursBox.setStyleSheet(
+            """
+                QSpinBox {
+                    background-color: #FFF3E2;
+                    color: #333333;
+                    border: 2px solid #FA9884;
+                    border-radius: 5px;
+                    padding: 2px;
+                }
+            """
+        )
+        hoursBox.move(50, 185)
 
         # Day of the Week
         dayLabel = QLabel("Which day would you like to do the task?", self)
-        dayLabel.move(220, 200)
+        dayLabel.setFont(QFont("Tahoma", 14))
+        dayLabel.move(360, 230)
+
+        # Styles for QComboBox
+        style = f"""
+                    QComboBox {{
+                        border-radius: 8px;
+                        border: 2px solid rgb(25, 167, 206);
+                        padding: 4px;
+                        background-color: rgb(175, 211, 226);
+                    }}
+
+                    QComboBox::drop-down {{
+                        subcontrol-origin: padding;
+                        subcontrol-position: top right;
+                        width: 24px;
+                        border-top-right-radius: 8px;
+                        border-bottom-right-radius: 8px;
+                        border: none;
+                    }}
+
+                    QComboBox::down-arrow {{
+                        image: url(down_arrow.png);
+                        width: 24px;
+                        height: 24px;
+                    }}
+
+                    QComboBox QAbstractItemView {{
+                        
+                        border-radius: 8px;
+                        border: 2px solid rgb(25, 167, 206);
+                        padding: 4px;
+                        background-color: rgb(175, 211, 226);
+                    }}
+
+                    QComboBox QAbstractItemView::item {{
+                        height: 30px;
+                        padding: 4px;
+                    }}
+
+                    QComboBox QAbstractItemView::item:hover {{
+                        background-color: rgb(60, 60, 60);
+                    }}
+                """
 
         dayComboBox = QComboBox(self)
+        dayComboBox.setStyleSheet(style)
         dayComboBox.addItems(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
-        dayComboBox.move(220, 220)
+        dayComboBox.move(360, 265)
         dayComboBox.textActivated[str].connect(self.onActivated)
 
         self.dayText = QLabel('Sunday', self)
@@ -89,39 +152,113 @@ class Page1(QWidget):
 
         # Time Available
         timeLabel = QLabel("Which hours are you available?", self)
-        timeLabel.move(50, 200)
+        timeLabel.setFont(QFont("Tahoma", 14))
+        timeLabel.move(50, 230)
         fromTimeEdit = QTimeEdit(self)
         fromTimeEdit.setDisplayFormat("HH:mm")
-        fromTimeEdit.move(50, 220)
+        fromTimeEdit.setStyleSheet(
+            """
+                QTimeEdit {
+                    background-color: #FFF3E2;
+                    color: #333333;
+                    border: 2px solid #FA9884;
+                    border-radius: 5px;
+                    padding: 2px;
+                }
+            """
+        )
+        fromTimeEdit.move(50, 265)
 
-        toLabel = QLabel("->", self)
-        toLabel.move(105, 220)
+        toLabel = QLabel("to", self)
+        toLabel.move(125, 267)
 
         toTimeEdit = QTimeEdit(self)
-        toTimeEdit.move(120, 220)
+        toTimeEdit.move(150, 265)
         toTimeEdit.setDisplayFormat("HH:mm")
+        toTimeEdit.setStyleSheet(
+            """
+                QTimeEdit {
+                    background-color: #FFF3E2;
+                    color: #333333;
+                    border: 2px solid #FA9884;
+                    border-radius: 5px;
+                    padding: 2px;
+                }
+            """
+        )
 
         # Descriptions
         descriptionLabel = QLabel("Notes or Descriptions", self)
-        descriptionLabel.move(50, 250)
+        descriptionLabel.setFont(QFont("Tahoma", 14))
+        descriptionLabel.move(50, 320)
         descriptionLabel.setStyleSheet("color: black")
 
         # Textbox for Note and Description
         descriptionTextBox = QLineEdit(self)
-        descriptionTextBox.move(50, 270)
+        descriptionTextBox.setObjectName("ModernLineEdit1")
+        descriptionTextBox.setStyleSheet("""
+                            QLineEdit#ModernLineEdit1 {
+                                background-color: #F5F5F5;
+                                border: none;
+                                padding: 8px;
+                                border-radius: 8px;
+                            }
+                            QLineEdit#ModernLineEdit:hover {
+                                background-color: #E6E6E6;
+                            }
+                            QLineEdit#ModernLineEdit:focus {
+                                background-color: white;
+                                border: 2px solid #3498DB;
+                            }
+                        """)
+        descriptionTextBox.move(50, 350)
         descriptionTextBox.setFixedWidth(300)
         descriptionTextBox.setFixedHeight(150)
 
         # Add Task
         addTaskButton = QPushButton("Add Task", self)
-        addTaskButton.move(50, 440)
+        addTaskButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        addTaskButton.setObjectName("ModernButton")
+        addTaskButton.setStyleSheet("""
+                    QPushButton#ModernButton {
+                        background-color: #2ECC71;
+                        color: white;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 16px;
+                    }
+                    QToolButton#ModernButton:hover {
+                        background-color: #27AE60;
+                    }
+                    QToolButton#ModernButton:pressed {
+                        background-color: #1E8449;
+                    }
+                """)
+        addTaskButton.move(50, 530)
         addTaskButton.clicked.connect(
             lambda: self.addTask(eventTextBox, descriptionTextBox, hoursBox, fromTimeEdit, toTimeEdit, dayLabel,
                                  dayComboBox, timeLabel, toLabel))
 
         # Submit
         submitButton = QPushButton("Submit", self)
-        submitButton.move(150, 440)
+        submitButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        submitButton.setObjectName("ModernButton2")
+        submitButton.setStyleSheet("""
+                    QPushButton#ModernButton2 {
+                        background-color: #3498DB;
+                        color: white;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 16px;
+                    }
+                    QToolButton#ModernButton:hover {
+                        background-color: #2980B9;
+                    }
+                    QToolButton#ModernButton:pressed {
+                        background-color: #1B4F72;
+                    }
+                """)
+        submitButton.move(200, 530)
         submitButton.clicked.connect(
             lambda: self.goToPage2(dayLabel, dayComboBox, timeLabel, fromTimeEdit, toTimeEdit, toLabel))
 
@@ -138,7 +275,7 @@ class Page1(QWidget):
                                                                        '\n- Multiple task creation capabilities added'
                                                                        '\n- Checkbox integration for days of the week'
                                                                        '\n- Console log output for task management for the time being'))
-        btn0.move(800, 460)
+        btn0.move(800, 560)
 
     def onActivated(self, text):
         self.dayText.setText(text)
@@ -445,7 +582,13 @@ if __name__ == "__main__":
     stacked_widget.addWidget(page3)
     stacked_widget.setCurrentWidget(page1)
 
-    stacked_widget.setGeometry(300, 300, 850, 500)
+    stacked_widget.setGeometry(300, 300, 850, 600)
+    stacked_widget.setObjectName("MyWidget")
+    stacked_widget.setStyleSheet("""
+            #MyWidget {
+                background-color: #BFCCB5;
+            }
+        """)
 
     # Show the stacked widget
 
